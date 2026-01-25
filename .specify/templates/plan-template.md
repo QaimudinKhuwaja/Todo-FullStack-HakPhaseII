@@ -31,7 +31,21 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- [ ] **Workflow Adherence**: Does this plan follow the `Spec → Plan → Tasks → Implement` workflow?
+- [ ] **Technology Stack**:
+    - [ ] Frontend: Is it using Next.js, TypeScript, and Tailwind CSS?
+    - [ ] Backend: Is it using Python/FastAPI and SQLModel?
+    - [ ] Database: Is it using Neon Serverless PostgreSQL?
+    - [ ] Authentication: Is it using Better Auth (frontend) and JWTs (backend)?
+- [ ] **Disallowed Technologies**:
+    - [ ] Does the plan avoid introducing new authentication libraries, ORMs, or state management libraries?
+    - [ ] Is frontend-to-database access prevented?
+    - [ ] Is session-based authentication avoided?
+- [ ] **Security**:
+    - [ ] Are all new API endpoints protected by JWT authentication?
+    - [ ] Is user identity derived solely from the JWT token?
+    - [ ] Are all data operations scoped to the authenticated user?
+- [ ] **Project Structure**: Does the plan use a monorepo with `frontend` and `backend` directories?
 
 ## Project Structure
 
