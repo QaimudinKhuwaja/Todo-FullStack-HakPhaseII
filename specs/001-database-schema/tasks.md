@@ -23,8 +23,8 @@ description: "Task list for 001-database-schema feature implementation"
 
 **Purpose**: Project initialization and setting up the Python environment for backend models.
 
-- [ ] T001 Ensure `SQLModel` and `psycopg2-binary` are listed in `backend/requirements.txt`.
-- [ ] T002 Create initial structure for database models in `backend/app/models/__init__.py` and other model files.
+- [x] T001 Ensure `SQLModel` and `psycopg2-binary` are listed in `backend/requirements.txt`.
+- [x] T002 Create initial structure for database models in `backend/app/models/__init__.py` and other model files.
 
 ---
 
@@ -32,8 +32,8 @@ description: "Task list for 001-database-schema feature implementation"
 
 **Purpose**: Core database connection and session management.
 
-- [ ] T003 Configure the database engine for PostgreSQL using `SQLModel` in `backend/app/core/db.py`.
-- [ ] T004 Implement session management and utility functions for database interactions in `backend/app/core/db.py`.
+- [x] T003 Configure the database engine for PostgreSQL using `SQLModel` in `backend/app/core/db.py`.
+- [x] T004 Implement session management and utility functions for database interactions in `backend/app/core/db.py`.
 
 ---
 
@@ -45,8 +45,8 @@ description: "Task list for 001-database-schema feature implementation"
 
 ### Implementation for User Story 1
 
-- [ ] T005 [P] [US1] Create `User` model definition with `id`, `email`, `created_at` fields in `backend/app/models/user.py`.
-- [ ] T006 [US1] Add `email` uniqueness constraint to the `User` model in `backend/app/models/user.py`.
+- [x] T005 [P] [US1] Create `User` model definition with `id`, `email`, `created_at` fields in `backend/app/models/user.py`.
+- [x] T006 [US1] Add `email` uniqueness constraint to the `User` model in `backend/app/models/user.py`.
 
 ---
 
@@ -58,9 +58,9 @@ description: "Task list for 001-database-schema feature implementation"
 
 ### Implementation for User Story 2
 
-- [ ] T007 [P] [US2] Create `Todo` model definition with `id`, `user_id`, `title`, `description`, `completed`, `created_at`, `updated_at` fields in `backend/app/models/todo.py`.
-- [ ] T008 [US2] Define the one-to-many relationship between `User` and `Todo` models in `backend/app/models/user.py` and `backend/app/models/todo.py`.
-- [ ] T009 [US2] Ensure foreign key constraint for `user_id` in the `Todo` model in `backend/app/models/todo.py`.
+- [x] T007 [P] [US2] Create `Todo` model definition with `id`, `user_id`, `title`, `description`, `completed`, `created_at`, `updated_at` fields in `backend/app/models/todo.py`.
+- [x] T008 [US2] Define the one-to-many relationship between `User` and `Todo` models in `backend/app/models/user.py` and `backend/app/models/todo.py`.
+- [x] T009 [US2] Ensure foreign key constraint for `user_id` in the `Todo` model in `backend/app/models/todo.py`.
 
 ---
 
@@ -68,9 +68,9 @@ description: "Task list for 001-database-schema feature implementation"
 
 **Purpose**: Schema-level testing and final checks.
 
-- [ ] T010 [P] Implement schema-level tests for `User` model data integrity (e.g., email uniqueness) in `backend/tests/models/test_user.py`.
-- [ ] T011 [P] Implement schema-level tests for `Todo` model data integrity and relationship with `User` (e.g., foreign key, cascade delete) in `backend/tests/models/test_todo.py`.
-- [ ] T012 Verify all model definitions are correctly imported and accessible (e.g., via `backend/app/models/__init__.py`).
+- [x] T010 [P] Implement schema-level tests for `User` model data integrity (e.g., email uniqueness) in `backend/tests/models/test_user.py`.
+- [x] T011 [P] Implement schema-level tests for `Todo` model data integrity and relationship with `User` (e.g., foreign key, cascade delete) in `backend/tests/models/test_todo.py`.
+- [x] T012 Verify all model definitions are correctly imported and accessible (e.g., via `backend/app/models/__init__.py`).
 
 ---
 

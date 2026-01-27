@@ -1,3 +1,6 @@
 fastapi
 uvicorn[standard]
 python-multipart
+sqlmodel
+psycopg2-binary
+pytest
