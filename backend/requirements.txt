@@ -4,3 +4,5 @@ python-multipart
 sqlmodel
 psycopg2-binary
 pytest
+bcrypt
+passlib

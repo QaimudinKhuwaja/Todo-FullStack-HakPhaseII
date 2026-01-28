@@ -78,7 +78,7 @@ description: "Task list for User Authentication feature implementation"
 **Purpose**: Address specified edge cases related to user authentication, such as handling disabled/locked accounts and mitigating rapid failed login attempts.
 
 - [X] T013 Implement basic mechanism for handling disabled/locked accounts (e.g., checking a `is_active` flag on the `User` model during login). `backend/app/api/endpoints/auth.py`
-- [ ] T014 Document placeholder for rate limiting or account lockout policies. `backend/docs/security_policies.md`
+- [x] T014 Document placeholder for rate limiting or account lockout policies. `backend/docs/security_policies.md`
 
 ---
 
