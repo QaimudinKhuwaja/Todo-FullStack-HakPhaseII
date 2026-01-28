@@ -49,7 +49,7 @@ description: "Task list for User Authentication feature implementation"
 - [X] T005 [P] [US1] Create a helper function to verify hashed passwords. `backend/app/core/security.py`
 - [X] T006 [US1] Implement user login endpoint that accepts credentials and performs validation. `backend/app/api/endpoints/auth.py`
 - [X] T007 [US1] Establish a valid session upon successful login. `backend/app/core/auth_utils.py`
-- [ ] T008 [US2] Implement handling for invalid credentials, returning non-specific error messages. `backend/app/api/endpoints/auth.py`
+- [X] T008 [US2] Implement handling for invalid credentials, returning non-specific error messages. `backend/app/api/endpoints/auth.py`
 
 **Checkpoint**: At this point, User Story 1 and 2 should be fully functional and testable independently
 
@@ -64,10 +64,10 @@ description: "Task list for User Authentication feature implementation"
 
 ### Implementation for User Story 3
 
-- [ ] T009 [P] [US3] Implement session validation middleware for protected routes. `backend/app/api/middlewares/auth_middleware.py`
-- [ ] T010 [US3] Implement an example endpoint requiring authentication to demonstrate resource protection. `backend/app/api/endpoints/protected.py`
-- [ ] T011 [US3] Implement explicit session invalidation (logout endpoint). `backend/app/api/endpoints/auth.py`
-- [ ] T012 [US3] Implement automatic session invalidation after inactivity. `backend/app/core/auth_utils.py`
+- [X] T009 [P] [US3] Implement session validation middleware for protected routes. `backend/app/api/middlewares/auth_middleware.py`
+- [X] T010 [US3] Implement an example endpoint requiring authentication to demonstrate resource protection. `backend/app/api/endpoints/protected.py`
+- [X] T011 [US3] Implement explicit session invalidation (logout endpoint). `backend/app/api/endpoints/auth.py`
+- [X] T012 [US3] Implement automatic session invalidation after inactivity. `backend/app/core/auth_utils.py`
 
 **Checkpoint**: All user stories should now be independently functional
 
@@ -77,7 +77,7 @@ description: "Task list for User Authentication feature implementation"
 
 **Purpose**: Address specified edge cases related to user authentication, such as handling disabled/locked accounts and mitigating rapid failed login attempts.
 
-- [ ] T013 Implement basic mechanism for handling disabled/locked accounts (e.g., checking a `is_active` flag on the `User` model during login). `backend/app/api/endpoints/auth.py`
+- [X] T013 Implement basic mechanism for handling disabled/locked accounts (e.g., checking a `is_active` flag on the `User` model during login). `backend/app/api/endpoints/auth.py`
 - [ ] T014 Document placeholder for rate limiting or account lockout policies. `backend/docs/security_policies.md`
 
 ---
