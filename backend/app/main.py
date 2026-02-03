@@ -1,8 +1,15 @@
+from app.api.endpoints import health, users, auth, protected, tasks
 from fastapi import FastAPI
+from app.core.db import create_db_and_tables
 from fastapi.middleware.cors import CORSMiddleware
-from app.api.endpoints import health, users, auth, protected
 
 app = FastAPI()
+
+
+@app.on_event("startup")
+def on_startup():
+    # Ensure database tables (and missing columns) exist before handling requests
+    create_db_and_tables()
 
 origins = [
     "http://localhost",
@@ -21,6 +28,7 @@ app.include_router(health.router)
 app.include_router(users.router)
 app.include_router(auth.router)
 app.include_router(protected.router)
+app.include_router(tasks.router)
 
 @app.get("/")
 async def root():

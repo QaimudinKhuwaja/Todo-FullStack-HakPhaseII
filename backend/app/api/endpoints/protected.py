@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
-from backend.app.api.middlewares.auth_middleware import session_validator
-from backend.app.core.auth_utils import Session
+from app.api.middlewares.auth_middleware import session_validator
+from app.core.auth_utils import Session
 
 router = APIRouter()
 
