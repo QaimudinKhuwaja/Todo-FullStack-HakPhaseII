@@ -1,26 +1,7 @@
 [build]
 builder = "nixpacks"
 
-[[services]]
-name = "backend"
-source = "backend"
-```
-
-**Explanation:**
-- Ye Railway ko batata hai ke `backend` folder deploy karna hai
-- Simple aur minimal config
-
----
-
-### **File 2: `.railwayignore`** (Root mein)
-```
-# Ignore frontend and docs
-frontend/
-.gemini/
-.specify/
-history/
-specs/
-*.md
-.git/
-node_modules/
-__pycache__/
+[deploy]
+startCommand = "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
