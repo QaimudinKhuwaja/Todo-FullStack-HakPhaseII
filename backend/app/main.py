@@ -1,3 +1,4 @@
+#backend/app/main.py
 from app.api.endpoints import health, users, auth, protected, tasks
 from fastapi import FastAPI
 from app.core.db import create_db_and_tables
@@ -14,7 +15,8 @@ def on_startup():
 origins = [
     "http://localhost",
     "http://localhost:3000",
-    "https://todo-full-stack-hak-phase-ii.vercel.app/",
+    "https://todo-full-stack-hak-phase-ii.vercel.app",
+    
 ]
 
 app.add_middleware(
