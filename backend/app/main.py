@@ -14,6 +14,7 @@ def on_startup():
 origins = [
     "http://localhost",
     "http://localhost:3000",
+    "https://todo-full-stack-hak-phase-ii.vercel.app/",
 ]
 
 app.add_middleware(
