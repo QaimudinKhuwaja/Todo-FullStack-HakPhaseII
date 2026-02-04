@@ -1,0 +1,9 @@
+frontend/
+.gemini/
+.specify/
+history/
+specs/
+*.md
+.git/
+node_modules/
+__pycache__/
