@@ -103,11 +103,8 @@ def on_startup():
     create_db_and_tables()
 
 origins = [
-    "http://localhost",
-    "http://localhost:3000",
-    "https://todo-full-stack-hak-phase-ii.vercel.app",
-    "http://127.0.0.1:3000",
-    "*"
+    "https://todo-full-stack-hak-phase-ii.vercel.app",  # ← exact Vercel URL (no trailing /, no *)
+    "http://localhost:3000",  # local ke liye
 ]
 
 app.add_middleware(
