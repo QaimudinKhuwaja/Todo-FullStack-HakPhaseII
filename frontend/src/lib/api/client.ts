@@ -106,7 +106,8 @@
 
 //lib/api/client.ts
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://todo-fullstack-hakphaseii-production.up.railway.app';
+// const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/' for local run;
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://todo-fullstack-hakphaseii-production.up.railway.app/';
 
 
 interface RequestOptions extends RequestInit {}
@@ -132,10 +133,17 @@ export async function apiRequest<T>(
     config.body = JSON.stringify(data);
   }
 
-  const response = await fetch(`${API_BASE_URL}${path}`, {
+//   const response = await fetch(`${API_BASE_URL}${path}`, {
+//   ...config,
+//   credentials: 'include',  // <-- ye add karo for cookies
+// });
+
+
+const response = await fetch(`${API_BASE_URL.replace(/\/$/, '')}${path.startsWith('/') ? path : '/' + path}`, {
   ...config,
-  credentials: 'include',  // <-- ye add karo for cookies
+  credentials: 'include',
 });
+
 
   // -----------------------
   // ✅ Handle Unauthorized
