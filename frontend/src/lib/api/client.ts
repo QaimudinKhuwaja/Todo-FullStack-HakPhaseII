@@ -105,7 +105,7 @@
 
 
 //lib/api/client.ts
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://todo-fullstack-hakphaseii-production.up.railway.app';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 interface RequestOptions extends RequestInit {}
 
