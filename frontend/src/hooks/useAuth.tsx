@@ -1,7 +1,8 @@
+
 // "use client"
 
 // import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
-// import { useRouter } from 'next/navigation';
+// import { useRouter, useSearchParams } from 'next/navigation';
 // import { AuthEndpoints } from '../lib/api/endpoints';
 // import { User, LoginCredentials, RegisterCredentials } from '../types/auth';
 // import { ApiError } from '../lib/api/client';
@@ -27,6 +28,7 @@
 //   const [isLoading, setIsLoading] = useState(true);
 //   const [error, setError] = useState<string | null>(null);
 //   const router = useRouter();
+//   const searchParams = useSearchParams();  // For redirect param
 
 //   const fetchUser = useCallback(async () => {
 //     const token = getAuthToken();
@@ -63,20 +65,20 @@
 //     try {
 //       const resp = await AuthEndpoints.login(credentials);
 
-//       // Agar backend body mein token return kar raha hai (optional)
 //       const tokenFromBody = (resp as any)?.access_token || (resp as any)?.token || (resp as any)?.access;
 //       if (tokenFromBody) {
 //         setAuthToken(tokenFromBody);
 //       }
 
-//       // Small delay taake browser cookie set kar le (Set-Cookie header process hone ke liye)
+//       // Delay for cookie to set
 //       await new Promise(resolve => setTimeout(resolve, 500));
 
-//       await fetchUser(); // User data fetch karo
+//       await fetchUser();
 
-//       // Redirect to dashboard
-//       router.push('/dashboard');
-//       router.refresh(); // Force re-render + cache clear
+//       // Redirect with param handling
+//       const redirectPath = searchParams.get('redirect') || '/dashboard';
+//       router.push(redirectPath);
+//       router.refresh();
 //     } catch (err: any) {
 //       setError(err?.message || 'Login failed');
 //       console.error('Login error:', err);
@@ -136,7 +138,6 @@
 //   }
 //   return context;
 // };
-
 
 
 
@@ -216,34 +217,40 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [fetchUser]);
 
   // -------------------- Login --------------------
-  const login = async (credentials: LoginCredentials) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const resp = await AuthEndpoints.login(credentials);
 
-      const tokenFromBody = (resp as any)?.access_token || (resp as any)?.token || (resp as any)?.access;
-      if (tokenFromBody) {
-        setAuthToken(tokenFromBody);
-      }
 
-      // Delay for cookie to set
-      await new Promise(resolve => setTimeout(resolve, 500));
+const login = async (credentials: LoginCredentials) => {
+  setIsLoading(true);
+  setError(null);
+  try {
+    const resp = await AuthEndpoints.login(credentials);
 
-      await fetchUser();
-
-      // Redirect with param handling
-      const redirectPath = searchParams.get('redirect') || '/dashboard';
-      router.push(redirectPath);
-      router.refresh();
-    } catch (err: any) {
-      setError(err?.message || 'Login failed');
-      console.error('Login error:', err);
-      throw err;
-    } finally {
-      setIsLoading(false);
+    const tokenFromBody = (resp as any)?.access_token || (resp as any)?.token || (resp as any)?.access;
+    if (tokenFromBody) {
+      setAuthToken(tokenFromBody);
     }
-  };
+
+    // Longer delay for cookie to propagate in production (network latency)
+    await new Promise(resolve => setTimeout(resolve, 1000));  // 1 second (was 500ms)
+
+    await fetchUser();  // Refresh user state
+
+    // Get redirect path from query param or default
+    const redirectPath = searchParams.get('redirect') || '/dashboard';
+
+    // Push to new route
+    router.push(redirectPath);
+
+    // Force refresh to sync middleware/auth state
+    router.refresh();
+  } catch (err: any) {
+    setError(err?.message || 'Login failed');
+    console.error('Login error:', err);
+    throw err;
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   // -------------------- Register --------------------
   const register = async (credentials: RegisterCredentials) => {

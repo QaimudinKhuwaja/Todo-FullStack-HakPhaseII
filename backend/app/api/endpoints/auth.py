@@ -1,5 +1,7 @@
-# # /app/api/endpopints/auth.py
-# from fastapi import APIRouter, HTTPException, status, Depends
+
+
+# import os
+# from fastapi import APIRouter, HTTPException, status, Depends, Response
 # from pydantic import BaseModel
 # from typing import Annotated
 
@@ -17,61 +19,35 @@
 
 # @router.post("/login")
 # async def login_for_access_token(
-#     user_login: UserLogin, db: Annotated[Session, Depends(get_session)]
+#     user_login: UserLogin,
+#     response: Response,  # ✅ Add Response here
+#     db: Annotated[Session, Depends(get_session)]
 # ):
 #     user = db.exec(select(User).where(User.email == user_login.email)).first()
 
-#     if not user:
+#     if not user or not user.is_active or not verify_password(user_login.password, user.password_hash):
 #         raise HTTPException(
 #             status_code=status.HTTP_401_UNAUTHORIZED,
 #             detail="Incorrect email or password",
 #             headers={"WWW-Authenticate": "Bearer"},
 #         )
     
-#     if not user.is_active:
-#         raise HTTPException(
-#             status_code=status.HTTP_401_UNAUTHORIZED,
-#             detail="Incorrect email or password",
-#             headers={"WWW-Authenticate": "Bearer"},
-#         )
+#     # Create a session
+#     session_obj = create_session(user_id=user.id)
     
-#     if not verify_password(user_login.password, user.password_hash):
-#         raise HTTPException(
-#             status_code=status.HTTP_401_UNAUTHORIZED,
-#             detail="Incorrect email or password",
-#             headers={"WWW-Authenticate": "Bearer"},
-#         )
-    
-#     # Create a session for the authenticated user
-#     session_obj = create_session(user_id=user.id) # user.id cannot be None here due to database behavior
+#     is_secure = os.getenv("COOKIE_SECURE", "False").lower() == "true"
+#     same_site = os.getenv("COOKIE_SAMESITE", "lax")
 
-#     return {"user_id": user.id, "session_id": session_obj.session_id}
-
-
-# class SessionInvalidation(BaseModel):
-#     session_id: str
-
-# @router.post("/logout")
-# async def logout(
-#     session_data: SessionInvalidation, db: Annotated[Session, Depends(get_session)] # db is not used here but kept for consistency if needed later
-# ):
-#     auth_utils.delete_session(session_data.session_id)
-#     return {"message": "Logged out successfully"}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#     # # ✅ Set cookie
+#     response.set_cookie(
+#         key="access_token",
+#         value=session_obj.session_id,
+#         httponly=True,
+#         samesite=same_site,
+#         secure=is_secure,          # production mein true
+#         max_age=60 * 60 * 24 * 7,  # 7 days
+#         path="/" # localhost ke liye
+#     )
 
 
 
@@ -98,7 +74,7 @@ class UserLogin(BaseModel):
 @router.post("/login")
 async def login_for_access_token(
     user_login: UserLogin,
-    response: Response,  # ✅ Add Response here
+    response: Response,
     db: Annotated[Session, Depends(get_session)]
 ):
     user = db.exec(select(User).where(User.email == user_login.email)).first()
@@ -113,18 +89,19 @@ async def login_for_access_token(
     # Create a session
     session_obj = create_session(user_id=user.id)
     
-    is_secure = os.getenv("COOKIE_SECURE", "False").lower() == "true"
-    same_site = os.getenv("COOKIE_SAMESITE", "lax")
+    # Production-safe cookie flags (cross-origin ke liye must)
+    # Railway pe env var set kar sakte ho: COOKIE_SECURE=true, COOKIE_SAMESITE=None
+    is_secure = os.getenv("COOKIE_SECURE", "True").lower() == "true"  # Default True for prod
+    same_site = os.getenv("COOKIE_SAMESITE", "None")  # Default 'None' for cross-origin
 
-    # # ✅ Set cookie
     response.set_cookie(
         key="access_token",
         value=session_obj.session_id,
         httponly=True,
-        samesite=same_site,
-        secure=is_secure,          # production mein true
-        max_age=60 * 60 * 24 * 7,  # 7 days
-        path="/" # localhost ke liye
+        samesite=same_site,          # 'None' for cross-site (Vercel → Railway)
+        secure=is_secure,            # True for HTTPS (production must)
+        max_age=60 * 60 * 24 * 7,    # 7 days
+        path="/"
     )
 
-
+    return {"message": "Login successful"}  # Optional response body
