@@ -128,12 +128,14 @@
 
 
 
+
+
 // lib/api/client.ts
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://todo-fullstack-hakphaseii-production.up.railway.app/';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://todo-fullstack-hakphaseii-production.up.railway.app';
 
-// Normalize base URL to remove trailing slash
-const normalizedBase = API_BASE_URL.replace(/\/+$/, '');
+// Normalize base URL (remove trailing slash if any)
+const normalizedBase = API_BASE_URL.replace(/\/$/, '');
 
 interface RequestOptions extends RequestInit {}
 
@@ -158,8 +160,15 @@ export async function apiRequest<T>(
     config.body = JSON.stringify(data);
   }
 
-  // Ensure path starts with /
+  // Normalize path: always start with /
   const fullPath = path.startsWith('/') ? path : '/' + path;
+
+  // Debug log – ye console mein dikhega
+  console.log('API Request:', {
+    url: `${normalizedBase}${fullPath}`,
+    method,
+    body: data ? JSON.stringify(data) : null
+  });
 
   const response = await fetch(`${normalizedBase}${fullPath}`, config);
 
@@ -172,16 +181,20 @@ export async function apiRequest<T>(
 
   if (!response.ok) {
     let errorMessage = 'Something went wrong';
+
     try {
       const errorData = await response.json();
       errorMessage = errorData.detail || errorData.message || JSON.stringify(errorData);
     } catch {
       errorMessage = await response.text() || `Server error: ${response.status}`;
     }
+
     throw new ApiError(errorMessage, response);
   }
 
-  if (response.status === 204) return null as T;
+  if (response.status === 204) {
+    return null as T;
+  }
 
   return response.json();
 }
@@ -212,3 +225,101 @@ export const api = {
   delete: <T>(path: string, options?: RequestOptions) =>
     apiRequest<T>('DELETE', path, undefined, options),
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // lib/api/client.ts
+
+// const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:8000/';
+
+// // Normalize base URL to remove trailing slash
+// const normalizedBase = API_BASE_URL.replace(/\/+$/, '');
+
+// interface RequestOptions extends RequestInit {}
+
+// export async function apiRequest<T>(
+//   method: string,
+//   path: string,
+//   data?: any,
+//   options?: RequestOptions
+// ): Promise<T> {
+//   const headers: HeadersInit = {
+//     'Content-Type': 'application/json',
+//   };
+
+//   const config: RequestInit = {
+//     method,
+//     headers,
+//     credentials: 'include',
+//     ...options,
+//   };
+
+//   if (data) {
+//     config.body = JSON.stringify(data);
+//   }
+
+//   // Ensure path starts with /
+//   const fullPath = path.startsWith('/') ? path : '/' + path;
+
+//   const response = await fetch(`${normalizedBase}${fullPath}`, config);
+
+//   if (response.status === 401) {
+//     if (window.location.pathname !== '/login') {
+//       window.location.href = '/login';
+//     }
+//     throw new Error('Unauthorized - please login again');
+//   }
+
+//   if (!response.ok) {
+//     let errorMessage = 'Something went wrong';
+//     try {
+//       const errorData = await response.json();
+//       errorMessage = errorData.detail || errorData.message || JSON.stringify(errorData);
+//     } catch {
+//       errorMessage = await response.text() || `Server error: ${response.status}`;
+//     }
+//     throw new ApiError(errorMessage, response);
+//   }
+
+//   if (response.status === 204) return null as T;
+
+//   return response.json();
+// }
+
+// export class ApiError extends Error {
+//   response?: Response;
+//   status: number;
+
+//   constructor(message: string, response?: Response) {
+//     super(message);
+//     this.response = response;
+//     this.status = response ? response.status : 0;
+//     Object.setPrototypeOf(this, ApiError.prototype);
+//   }
+// }
+
+// // API helpers
+// export const api = {
+//   get: <T>(path: string, options?: RequestOptions) =>
+//     apiRequest<T>('GET', path, undefined, options),
+
+//   post: <T>(path: string, data: any, options?: RequestOptions) =>
+//     apiRequest<T>('POST', path, data, options),
+
+//   patch: <T>(path: string, data: any, options?: RequestOptions) =>
+//     apiRequest<T>('PATCH', path, data, options),
+
+//   delete: <T>(path: string, options?: RequestOptions) =>
+//     apiRequest<T>('DELETE', path, undefined, options),
+// };
