@@ -25,10 +25,12 @@
 // }
 
 
+
 import './globals.css';
 import { Inter } from 'next/font/google';
 import Navbar from '@/components/common/Navbar';
 import { AuthProvider } from '@/hooks/useAuth';
+import { Suspense } from 'react';   // ← Yeh line add karo (top pe import)
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -45,10 +47,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <AuthProvider>
-          <Navbar />
-          <main className="container mx-auto p-4">{children}</main>
-        </AuthProvider>
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+          <AuthProvider>
+            <Navbar />
+            <main className="container mx-auto p-4">{children}</main>
+          </AuthProvider>
+        </Suspense>
       </body>
     </html>
   );
