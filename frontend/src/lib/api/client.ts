@@ -1,8 +1,8 @@
 
-//lib/api/client.ts
+// //lib/api/client.ts
 
-// // const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/' for local run;
-// const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://todo-fullstack-hakphaseii-production.up.railway.app/';
+//  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/';
+// // const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://todo-fullstack-hakphaseii-production.up.railway.app/';
 
 
 // interface RequestOptions extends RequestInit {}
@@ -115,6 +115,16 @@
 //   delete: <T>(path: string, options?: RequestOptions) =>
 //     apiRequest<T>('DELETE', path, undefined, options),
 // };
+
+
+
+
+
+
+
+
+
+
 
 
 
